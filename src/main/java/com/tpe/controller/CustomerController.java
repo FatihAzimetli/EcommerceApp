@@ -6,12 +6,10 @@ import com.tpe.service.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 //@Controller// springde ögretilen ilk bu anatasyon konmali bu klasta requestler handel edilecek
 // Ancak daha özellestirilmis hali ResController metodunu koyacagiz
@@ -34,7 +32,9 @@ public class CustomerController {
     //bu yapildiginda hata gider @RequiredArgsConstructor bu zorunlu argumanlari icerir
     //bu @RequiredArgsConstructor parametresi custemerService olmus olur ve hata giderilmis olur
 
-   private final CustomerService customerService ;
+   private final CustomerService customerService ; //!!-heryerde ayni obje objenin kullanilmasi icin sadece companint ile
+    // !!-isaretliyoruz  CostemerService costemerService= newCostemurService gibi bir obje olusturmuyoruz
+    // !!- newleme maliyetli ve geciktiricidir
    /* 3- Spring ile control bir compenent ile--
     * bitiriyoruz newleme maliyetlidir enjekte etmek icin basina privat getiriyoruz--
     *-- enjekte edildikten sonra degistirilemesin final olsun istiyoruz  final
@@ -68,4 +68,18 @@ public class CustomerController {
 customerService.saveCustomer(customer);
         return new ResponseEntity<>("Customer is saved successfully", HttpStatus.CREATED);//201
     }
+    //2..1.a)ikinci endpoint tüm customerlari getirme islemi--> http://localhost:8080/customers + GET
+    //2.2.a) burada kullanicidan herhangi bir data almamiza gerek yok sadece customerlari gösterme islemi yapacagiz
+    //2.3.a) @GetMapping () cagiriyoruz ve pet'ine yeni bir end point eklemeye gerek yok
+    //2.4.a) ResponseEntity<List> burada customer listesi dönecek
+    //2.5.a)ok kodu 200'dür    return new ResponseEntity<>(customerList,HttpStatus.OK);//200 bunun bir altarnativi var
+    //2.6.a)return ResponseEntity.ok(customerList);//200 dönmesini istedigimizin body () yazmamiz yeterli
+    //2.7.a)getAll omadigi icin ona serviste olustur dedik
+    @GetMapping
+    public ResponseEntity<List<Customer>> getAllCustomers(){
+        List<Customer> customerList = customerService.getAll();
+        //return new ResponseEntity<>(customerList,HttpStatus.OK);//200
+        return ResponseEntity.ok(customerList);//200
+    }
+
 }
