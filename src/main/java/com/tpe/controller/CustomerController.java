@@ -16,6 +16,25 @@ import java.util.List;
 @RestController//daha özellestirilmis halidir burada bir ResApy gelistiriyoruz
 // requesleri bunun karsilayip risponslari olusturacagiz
 //ilk entpointler custemers ile basliyor http://local/host8080/customer/save +POST + body
+
+// buraya postmen bilgiler doldurduk iki kullanici adi tlf ve email girildi
+
+    /*    "id": 1,
+        "name": "Jack",
+        "lastName": "Sparrow",
+        "email": "jack@mail.com",
+        "phone": "123456789",
+        "orders": []
+
+
+        "id": 2,
+        "name": "Harry",
+        "lastName": "Potter",
+        "email": "harry@mail.com",
+        "phone": "123456788",
+        "orders": []*/
+
+
 //POST tabloda degisiklik istegidir //kullanicinin Id otomatik genaret edilecek
 //ama musterinin cok bilgisi name lastname phone e-mail gibi bilgileri var bunlar bize
 //jhsob formatinda body olarak gelecek
@@ -81,5 +100,48 @@ customerService.saveCustomer(customer);
         //return new ResponseEntity<>(customerList,HttpStatus.OK);//200
         return ResponseEntity.ok(customerList);//200
     }
+//2.10 Id ile tek bir costemer getirme --> http://localhost:8080/customers/1 + GET
+    // id tabloda yoksa hata firlatir .(resourceNotFoundException)
+    // burada hangi hhtp metodu olacak soruldu. Burda customerlari getirip gösterme olacagi icin get metodu olacak
+    // bu durumda GetMapping ile baslanir ve geriye ResponseEnttity döndürülür ve icinde  customer olur  ve
+    // ismide getCustomer olsun seklinde metodu tanimlariz
+    @GetMapping("/{id}")
+public ResponseEntity<Customer> getCustomer(@PathVariable Long identity){
 
+    }
+
+    // soru bu sekilde getmapping yazarsam ne olur.? yukaridaki kod ile asagidaki kod ayni oldu bu
+    // durumda cakisacak karasizlik olur ve hata firlatir bu durmda GetNapping yerine
+    // PostMapping kullanirsak ayni http bölümünü cagirirken karisiklik olmaz burada
+    // requestler tanimlanirken cakismamasina dikkat etmemiz gerekiyorr urada Getmapping kullanagiz
+    // http://localhost:8080/customers/1  burada customerdan sonra /1 var ancak pet icini dolduracagiz biz
+    // kullanicidan buradaki /1 json body disinda burada bit petverabil ile yada query ile bilgi alabiliriz
+    // burada /1 yani bir pet  parametresi yada petvaraible kullanilmis  burda önce pet varible sonra
+    // bir body icine degisken adini yazariz @GetMapping("/{id}") yani diyoruzki customerdan gelen
+    // degeri id icine ata peki bu degiskeni kullanabilmemiz icin (@PathVariable Long id) yani pat g
+    // elen degeri long icindeki id degere ata demis olduk (@PathVariable("id") Long id) yani pat
+    // vaible icindeki id oku ve Long degerindeki degiskene ata diyoruz ancak burada isim kullanmak zorunda
+    // degiliz  @GetMapping("/{id}") buradaki id ile asagidaki id ayni ve asagiya identity bile yazabiliriz sonucu degistirmez
+    //public ResponseEntity<Customer> getCustomer(@PathVariable("id") Long id) iste bu sekilded oluyor  @GetMapping("/{id}")
+    //(@PathVariable Long identity) ama petvraiblde id=1 ve pet vraibgeda jkk gibi bir deger
+    // varsa yani su sekilde http://local/host8080/customer/1/jkk +Get var ise o zaman pat
+    // veraiblelain isimlerini kullanmamiz gerekiyor bizde birtane var dogrudan pat vraibele daki "{id}" i okuyacak
+    // ancak yazarsak okunabilirligi artmis olur ancak burada ikinci bir sorun var. sorun nedir ??????
+    // kullanici bizden id=1 olan customer istemis henüz burada otorasin otoreshin gerceklestirmedik ama
+    // bu sorguyu yapan bir yöneticide olabilir dogrudan son kullanicida olabilir....???? bu durumda herhangi bir
+    // kullaniciya customer'in örnegin id bilgisini göstermek istermiyiz.? bu durum devoleperle ilgili bir konu
+    // kesinlikle son kullaniciya id bilgisini göstermek istemeyiz bu bilgileri admin ise gösteririz dB ile
+    // iletisime gecen repo katmanidir kullanici ile dogrudan bu katmanlarda iletisime gecirmiyoruz araya bir
+    // köprü daha koyuyoruz yani servis katmani amacimiz kontrolleri saglamak clainttan aldigimiz her bilgiyi
+    // dogrudan DB göndermiyoruz bazi kosullari kontrol etmemiz gerekiyor kullanicidan gelen bilgilerin icine
+    // bakmaliyiz ve bir kismini secerek DB gecirmeliyiz bazilarini iptal edebilir yada DB getirdigimiz bilgiyi
+    // dogrudan kullaniciya aktarmak istemiyebiliriz cünkü DB bizim gizli hazinemizdir örnek customer burda "id"
+    // göstermek istemiyoruz bu durumda yapmamiz gereken kullanicidan sadece istedigimiz bilgileri almak ve
+    // kullaniciya sadece istedigi bilgileri döndürmek icin özel objeler olustururuz bu objeler DB ile
+    // kullanici arasinda tranfer etmek icin kullanacagiz bunlara genel ismi ile "DTO" deyta Tranfer object
+    // diyoruz bunlar DB ile kullanici arasinda tasidigimiz kullanilabilir objelerdir.
+    // Gecici okunabilir ancak üzerine yazilamaz objelerdir. Bunun icin Customer obseinde
+    // clainte göstereceklerimiz icin birtane özel obje tanimliyoruz Customer icin DTO olusturuyoruz
+    // bu durumda mevcut pakeglar disinda birtane daha pakeg ihtiyacimiz var com.tpe üzerine gelip new pakej diyoruz
+    // ve pakeg adi dto yaziyoruz ve klasimizi olusturuyoruz. public class CustomerDTO sonrasi 3.1.a ile basladim.
 }
