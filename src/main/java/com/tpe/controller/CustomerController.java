@@ -2,6 +2,7 @@ package com.tpe.controller;
 
 
 import com.tpe.domain.Customer;
+import com.tpe.dto.CustomerDTO;
 import com.tpe.service.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -106,7 +107,9 @@ customerService.saveCustomer(customer);
     // bu durumda GetMapping ile baslanir ve geriye ResponseEnttity döndürülür ve icinde  customer olur  ve
     // ismide getCustomer olsun seklinde metodu tanimlariz
     @GetMapping("/{id}")
-public ResponseEntity<Customer> getCustomer(@PathVariable Long identity){
+public ResponseEntity<CustomerDTO> getCustomer(@PathVariable Long identity){
+        CustomerDTO customerDTO  =customerService.getCustomerDTO(identity);
+        return ResponseEntity.ok(customerDTO);//200 göndermis olacagiz
 
     }
 
@@ -144,4 +147,20 @@ public ResponseEntity<Customer> getCustomer(@PathVariable Long identity){
     // clainte göstereceklerimiz icin birtane özel obje tanimliyoruz Customer icin DTO olusturuyoruz
     // bu durumda mevcut pakeglar disinda birtane daha pakeg ihtiyacimiz var com.tpe üzerine gelip new pakej diyoruz
     // ve pakeg adi dto yaziyoruz ve klasimizi olusturuyoruz. public class CustomerDTO sonrasi 3.1.a ile basladim.
+    //Customer DTO taniladik ve buraya döndük ve artik geriye Customer degil CustomerDTO dönecek
+    //public ResponseEntity<Customer> getCustomer(@PathVariable Long identity)
+    // yerin public ResponseEntity<CustomerDTO> getCustomer(@PathVariable Long identity) olacak
+    // kolay kismi return yazdik  return ResponseEntity.ok(customerDTO);//220 göndermis olacagiz burda
+    // customer döndügünde basarili mesaji dönecek ResponseEntity.ok metodunu kullandik ve dönecek olan 200 statü kodudur
+    // Customer'i nasil bulacagiz servisimizin eger getCustemerDTO metodu olsaydi ve bu metoda
+    // id i verdigimizde (identity) geriye bana CustomerDTO tipinde customerDTO döndürse idi bu customer DTO cevap
+    // olarak icinde id (identity)olmayan bilgiyi fronted tarafina gönderdik Fronted de cevabi kullaniciya gönderdi
+    /*@GetMapping("/{id}")
+public ResponseEntity<CustomerDTO> getCustomer(@PathVariable Long identity){
+        CustomerDTO customerDTO  =customerService.getCustomerDTO(identity);
+        return ResponseEntity.ok(customerDTO);*/
+    //Yani olay bu Ancak CustomerDTO customerDTO  =customerService."//getCustomerDTO//"(identity); kisim kizardi
+    // üzerine geldik ve serviste bu metodu olustura tikladik. ve otomatik olarak servise yöneldik.
+    // seviste olusum  public CustomerDTO getCustomerDTO(Long identity) {
+    //    } bu sekilde oldu burda //4.1.a olarak nota serviste devam ediyorum.
 }
