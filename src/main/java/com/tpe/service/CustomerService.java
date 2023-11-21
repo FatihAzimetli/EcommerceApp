@@ -102,5 +102,25 @@ public class CustomerService {
         Customer foundCustomer = getCustomerById(identity);
         CustomerDTO customerDTO = new CustomerDTO(foundCustomer);
        // ""customerRepository.findById(identity);"" buradan aldik yukariya yapistirdik icindeki identity silip id yaptik
+        //10.2.a  CustomerDTO customerDTO = new CustomerDTO(foundCustomer.getname,getlasname ...); uzunca yazmak yerine
+        // CustomerDto da kendimiz bir constructer olusturacagiz
+        return customerDTO; //bu hali ile artik DTO dönmüs oluyor.CustomerDTO kilasinda bir defa setledik
+        // ve bu klasta calisacak
+    }
+//13.1.a --> olusturulan method
+    //Customer silmek icin jpa methodlari kullanacagiz customerRepository.delete
+    // dedigimizde deleteById metodu geldi bu sekilde yazdik  customerRepository.deleteById(id);
+    // silme islemi gerceklesmeden önce bu kontrolu yapmak istiyoruz öncelikle böyle bir müsteri varmi kontrol
+    // etmeliyiz bu müsteriyi getir metodunu cagiracagiz yukarida cotomure cagiran metodumuz zaten var
+    /*  public Customer getCustomerById(Long id){
+      Customer customer =  customerRepository.findById(id).
+              orElseThrow(()->new ResourceNotFoundException("Customer is not found by id: "+id));
+      return customer;*/
+    // burada customer yoksa zaten tabloya gitmeden ve silmek icin customer aramadan yukarida bitiyor eger
+    // customer varsa buraya geliyor ve silme islemini yapar
+
+    public void deleteCustomerById(Long id) {
+        getCustomerById(id);
+        customerRepository.deleteById(id);// bu komut DELETE FROM komutunu calistiracak ..WHERE (öyleki) id' su olan diyecek
     }
 }

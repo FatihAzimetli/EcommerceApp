@@ -70,10 +70,14 @@ public class CustomerDTO {
     // deger aldiginda bu klastaki name degerini su sekilde set et diyoruz parametredeki customer'in name
     // ile degistir diyoruz yani gidip servis klasinda yapmamiz yerine burada degistir dedik CostemerService klasina
     // simdi dogrudan foundCustomer verdigimizde
+    //10.2.a  CustomerDTO customerDTO = new CustomerDTO(foundCustomer.getname,getlasname ...); uzunca yazmak yerine
+    // CustomerDto da kendimiz bir constructer olusturacagiz
     public CustomerDTO(Customer customer){
-       this.name = customer.getName();
+       this.name = customer.getName(); //parametredeki customeren name ile set et
        this.lastName=customer.getLastName();
        this.email=customer.getEmail();
        this.phone=customer.getPhone();
+
+
     }
 }

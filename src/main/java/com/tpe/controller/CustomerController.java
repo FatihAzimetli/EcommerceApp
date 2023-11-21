@@ -163,4 +163,24 @@ public ResponseEntity<CustomerDTO> getCustomer(@PathVariable Long identity){
     // üzerine geldik ve serviste bu metodu olustura tikladik. ve otomatik olarak servise yöneldik.
     // seviste olusum  public CustomerDTO getCustomerDTO(Long identity) {
     //    } bu sekilde oldu burda //4.1.a olarak nota serviste devam ediyorum.
+
+    //Adim 13.1.a (16) id ile customer silme http://localhost:8080/customer/custom?id=1 +DELETE
+    //customer silindiginde siparisleride silinsin
+    //reponseEntity<> gislem yaptiginda sadece bir esaj dönsün istiyoruz String ile bu metodu asagida
+    // tanimladik @DeleteMapping icine ped tanmladik costum dan sonra pedde bir ? isareti var ? isaretinin
+    // anlami bir query parametresi gelecek demektir deleteCustomer() bu badiye yazacagiz bu parametreyi request
+    // icinden al diyoruz. Request icinden alabilmesi icin @RequestParam anatasyonunu yaziyoruz ve diyoruzki
+    // bununla beraber request icindeki id veya identity tipindeki degiskene ata diyoruz
+    // not. Bir parametremiz oldugu icin @RequestParam(id,...) seklinde diger parametreleri buraya yazmak zorundayiz.
+    // tek parametrede buna gerek yok, yazarsakta okunabilirlik artar
+    @DeleteMapping("/custom")
+    public ResponseEntity<String> deleteCustomer(@RequestParam("id") Long id){
+        //silmek icin neye ihtiyacimiz var servis klsinda dleteCustomerById() seklinde bir metodumuz olsaydi
+        // parametre olarak id degerini verdigimizde geriye herhangi bir deger döndürmeyecek sadece silme islemi
+        // yapacak ancak böyle bir metos yok bu yüzden üzerine gelip metodu olustur diyecegiz.
+        // söyleyince method CustomerServiced de otomatik olustu
+        customerService.deleteCustomerById(id);
+        return ResponseEntity.ok("Customer is deleted successfully..."); //200
+
+    }
 }
